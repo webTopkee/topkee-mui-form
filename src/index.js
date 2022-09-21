@@ -17,17 +17,21 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export default function MuiForm(props) {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     gilad: true,
     jason: false,
     antoine: false,
   });
   const { gilad, jason, antoine } = state;
 
-  const [age, setAge] = React.useState("");
+  const [age, setAge] = useState("");
 
   const handleChange = (event) => {
     setAge(event.target.value);
+  };
+
+  const handleTextField = (e) => {
+    console.log(e.target.value);
   };
 
   return (
@@ -39,26 +43,39 @@ export default function MuiForm(props) {
         gap: 2,
       }}
     >
-      <FormControl variant="standard">
-        <TextField label="Standard" variant="standard" />
-      </FormControl>
-      <FormControl component="fieldset" variant="standard">
-        <FormLabel component="legend">Assign responsibility</FormLabel>
-        <FormGroup row>
-          <FormControlLabel
-            control={<Checkbox checked={gilad} name="gilad" />}
-            label="Gilad Gray"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={jason} name="jason" />}
-            label="Jason Killian"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={antoine} name="antoine" />}
-            label="Antoine Llorca"
-          />
-        </FormGroup>
-      </FormControl>
+      {props.schemas.map((item) => {
+        if (item.component === "Input") {
+          return (
+            <FormControl variant="standard">
+              <TextField
+                label={item.label}
+                variant="standard"
+                onChange={handleTextField}
+              />
+            </FormControl>
+          );
+        } else if (item.component === "Checkbox") {
+          return (
+            <FormControl component="fieldset" variant="standard">
+              <FormLabel component="legend">{item.label}</FormLabel>
+              <FormGroup row>
+                {item.options.map((options) => {
+                  return (
+                    <FormControlLabel
+                      control={
+                        <Checkbox checked={gilad} name={options.value} />
+                      }
+                      label={options.label}
+                    />
+                  );
+                })}
+              </FormGroup>
+            </FormControl>
+          );
+        }
+      })}
+
+      {/* 
       <FormControl>
         <FormLabel>Gender</FormLabel>
         <RadioGroup
@@ -79,7 +96,7 @@ export default function MuiForm(props) {
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
       <Button variant="contained">submit</Button>
     </Box>
   );

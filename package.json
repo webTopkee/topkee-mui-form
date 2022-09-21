@@ -1,6 +1,6 @@
 {
   "name": "topkee-mui-form",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "基于mui创建表单组件包",
   "main": "index.js",
   "scripts": {
