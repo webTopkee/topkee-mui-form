@@ -1,7 +1,7 @@
 {
   "name": "topkee-mui-form",
   "version": "0.0.1",
-  "description": "",
+  "description": "基于mui创建表单组件包",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.config.js",
@@ -14,7 +14,8 @@
     "mui"
   ],
   "author": "webTopkee <Web.Kwun@topkee.com.hk>",
-  "homepage": "https://github.com/TopkeeMedia/topkee-cloud#readme",
+  "repository":"https://github.com/webTopkee/topkee-mui-form",
+  "homepage": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
