@@ -14,7 +14,7 @@
     "mui"
   ],
   "author": "webTopkee <Web.Kwun@topkee.com.hk>",
-  "repository":"https://github.com/webTopkee/topkee-mui-form",
+  "repository": "https://github.com/webTopkee/topkee-mui-form",
   "homepage": "",
   "license": "ISC",
   "devDependencies": {

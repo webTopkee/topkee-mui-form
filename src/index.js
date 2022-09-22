@@ -17,6 +17,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export default function MuiForm(props) {
+  const [value, setValue] = useState({});
+
   const [state, setState] = useState({
     gilad: true,
     jason: false,
@@ -28,10 +30,16 @@ export default function MuiForm(props) {
 
   const handleChange = (event) => {
     setAge(event.target.value);
+    console.log(value);
   };
 
-  const handleTextField = (e) => {
-    console.log(e.target.value);
+  const handleTextField = (even, field) => {
+    const obj = Object.assign(value, { [field]: even.target.value });
+    setValue(obj);
+  };
+
+  const sub = () => {
+    console.log(value);
   };
 
   return (
@@ -49,8 +57,39 @@ export default function MuiForm(props) {
             <FormControl variant="standard">
               <TextField
                 label={item.label}
-                variant="standard"
-                onChange={handleTextField}
+                type="text"
+                variant={item.variant}
+                onChange={(e) => {
+                  handleTextField(e, item.field);
+                }}
+              />
+            </FormControl>
+          );
+        } else if (item.component === "InputPassword") {
+          return (
+            <FormControl variant="standard">
+              <TextField
+                label={item.label}
+                type="password"
+                variant={item.variant}
+                onChange={(e) => {
+                  handleTextField(e, item.field);
+                }}
+              />
+            </FormControl>
+          );
+        } else if (item.component === "InputTextArea") {
+          return (
+            <FormControl variant="standard">
+              <TextField
+                label={item.label}
+                type="text"
+                multiline
+                rows={item.rows ? item.rows : 1}
+                variant={item.variant}
+                onChange={(e) => {
+                  handleTextField(e, item.field);
+                }}
               />
             </FormControl>
           );
@@ -75,8 +114,7 @@ export default function MuiForm(props) {
         }
       })}
 
-      {/* 
-      <FormControl>
+      {/* <FormControl>
         <FormLabel>Gender</FormLabel>
         <RadioGroup
           row
@@ -97,7 +135,9 @@ export default function MuiForm(props) {
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl> */}
-      <Button variant="contained">submit</Button>
+      <Button onClick={sub} variant="contained">
+        确定
+      </Button>
     </Box>
   );
 }

@@ -11,5 +11,12 @@ npm i topkee-mui-form
 import MuiForm from "topkee-mui-form";
 ```
 
+## schema 内组件的可选类型
+```js
+'Input'
+'InputPassword'
+'InputTextArea'
+```
+
 ## License
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mui/material-ui/blob/HEAD/LICENSE)
