@@ -43,8 +43,12 @@ const schemas = [
 
 <MuiForm schemas={schemas} />
 ```
+## Props
+|----|-----|------|-----|
+|属性|默认值|可选值|说明|
+|schemas|-|-|创建表单类型|
 
-## schema 内组件的可选类型
+## schemas 内组件的可选类型
 ```js
 'Input'
 'InputPassword'
