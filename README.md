@@ -1,5 +1,5 @@
 基于[mui](https://mui.com/)实现Form表单组件包   
-![img](https://webertop.oss-cn-hongkong.topkee.top/u_411116921098997760/202209211620411.png)
+<!-- ![img](https://webertop.oss-cn-hongkong.topkee.top/u_411116921098997760/202209231555652.png) -->
 
 ## 安装
 ```
@@ -53,6 +53,7 @@ const schemas = [
 'Input'
 'InputPassword'
 'InputTextArea'
+'InputNumber'
 ```
 
 ## License
