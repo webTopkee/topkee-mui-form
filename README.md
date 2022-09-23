@@ -42,6 +42,8 @@ const schemas = [
 
 <MuiForm schemas={schemas} />
 ```
+
+## 效果图
 ![img](https://webertop.oss-cn-hongkong.topkee.top/u_411116921098997760/202209231555652.png)
 ## Props
 |属性|默认值|可选值|说明|
