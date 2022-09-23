@@ -59,6 +59,8 @@ export default function MuiForm(props) {
                 label={item.label}
                 type="text"
                 variant={item.variant}
+                helperText={item.helperText}
+                required={item.required ? true : false}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -71,7 +73,9 @@ export default function MuiForm(props) {
               <TextField
                 label={item.label}
                 type="password"
+                helperText={item.helperText}
                 variant={item.variant}
+                required={item.required ? true : false}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -84,8 +88,25 @@ export default function MuiForm(props) {
               <TextField
                 label={item.label}
                 type="text"
+                helperText={item.helperText}
                 multiline
+                required={item.required ? true : false}
                 rows={item.rows ? item.rows : 1}
+                variant={item.variant}
+                onChange={(e) => {
+                  handleTextField(e, item.field);
+                }}
+              />
+            </FormControl>
+          );
+        } else if (item.component === "InputNumber") {
+          return (
+            <FormControl variant="standard">
+              <TextField
+                label={item.label}
+                type="number"
+                helperText={item.helperText}
+                required={item.required ? true : false}
                 variant={item.variant}
                 onChange={(e) => {
                   handleTextField(e, item.field);
