@@ -15,6 +15,7 @@ import Radio from "@mui/material/Radio";
 
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Schema from "async-validator";
 
 export default function MuiForm(props) {
   const [value, setValue] = useState({});
@@ -38,9 +39,33 @@ export default function MuiForm(props) {
     setValue(obj);
   };
 
-  const sub = () => {
-    console.log(value);
+  const rules = {
+    a1: { required: true, message: "请输入账号" },
+    a2: { required: true, message: "请输入密码" },
   };
+
+  const sub = (e) => {
+    // validator.validate({ a1: value.a1 }, (errors, fields) => {
+    //   if (errors && fields.a1) {
+    //     console.log(fields.a1[0].message);
+    //     return errors;
+    //   }
+    // });
+
+    e.preventDefault();
+    validator.validate(value, (errors, fields) => {
+      if (errors) {
+        for (let key of errors) {
+          console.log(key.message);
+        }
+        return errors;
+      } else {
+        console.log(value);
+      }
+    });
+  };
+
+  const validator = new Schema(rules);
 
   return (
     <Box
@@ -56,6 +81,7 @@ export default function MuiForm(props) {
           return (
             <FormControl variant="standard">
               <TextField
+                error
                 label={item.label}
                 type="text"
                 variant={item.variant}
