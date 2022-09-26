@@ -19,6 +19,7 @@ import Schema from "async-validator";
 
 export default function MuiForm(props) {
   const [value, setValue] = useState({});
+  const [modelControl, setModelControl] = useState({});
 
   const [state, setState] = useState({
     gilad: true,
@@ -39,9 +40,14 @@ export default function MuiForm(props) {
     setValue(obj);
   };
 
-  const rules = {
-    a1: { required: true, message: "请输入账号" },
-    a2: { required: true, message: "请输入密码" },
+  const getRequired = (condition) => {
+    if (Object.prototype.toString.call(condition) === "[object Object]") {
+      return condition.required;
+    } else if (Object.prototype.toString.call(condition) === "[object Array]") {
+      let result = condition.some((item) => item.required);
+      return result;
+    }
+    return false;
   };
 
   const sub = (e) => {
@@ -58,6 +64,7 @@ export default function MuiForm(props) {
         for (let key of errors) {
           console.log(key.message);
         }
+        // modelControl.value[prop] = fields[prop][0].message
         return errors;
       } else {
         console.log(value);
@@ -65,7 +72,7 @@ export default function MuiForm(props) {
     });
   };
 
-  const validator = new Schema(rules);
+  const validator = new Schema(props.rules);
 
   return (
     <Box
@@ -85,8 +92,9 @@ export default function MuiForm(props) {
                 label={item.label}
                 type="text"
                 variant={item.variant}
-                helperText={item.helperText}
-                required={item.required ? true : false}
+                prop="a1"
+                helperText={modelControl["a1"] | item.helperText}
+                required={getRequired(props.rules[item.field])}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -101,7 +109,7 @@ export default function MuiForm(props) {
                 type="password"
                 helperText={item.helperText}
                 variant={item.variant}
-                required={item.required ? true : false}
+                required={getRequired(props.rules[item.field])}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -116,7 +124,7 @@ export default function MuiForm(props) {
                 type="text"
                 helperText={item.helperText}
                 multiline
-                required={item.required ? true : false}
+                required={getRequired(props.rules[item.field])}
                 rows={item.rows ? item.rows : 1}
                 variant={item.variant}
                 onChange={(e) => {

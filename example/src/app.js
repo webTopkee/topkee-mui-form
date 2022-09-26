@@ -8,14 +8,12 @@ const schemas = [
     component: "Input",
     label: "输入框",
     variant: "standard",
-    required: true,
   },
   {
-    field: "a2",
+    field: "pwd",
     component: "InputPassword",
     label: "密码",
     variant: "standard",
-    required: true,
     helperText: "带*_+字母+数字组合",
   },
   {
@@ -53,5 +51,10 @@ const schemas = [
   // },
 ];
 
-const App = () => <MuiForm schemas={schemas} />;
+const rules = {
+  a1: { required: true, message: "请输入账号" },
+  pwd: { required: false, message: "请输入密码" },
+};
+
+const App = () => <MuiForm schemas={schemas} rules={rules} />;
 render(<App />, document.getElementById("root"));
