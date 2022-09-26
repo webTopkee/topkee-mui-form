@@ -21,20 +21,6 @@ export default function MuiForm(props) {
   const [value, setValue] = useState({});
   const [modelControl, setModelControl] = useState({});
 
-  const [state, setState] = useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
-  const { gilad, jason, antoine } = state;
-
-  const [age, setAge] = useState("");
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-    console.log(value);
-  };
-
   const handleTextField = (even, field) => {
     const obj = Object.assign(value, { [field]: even.target.value });
     setValue(obj);
@@ -51,20 +37,16 @@ export default function MuiForm(props) {
   };
 
   const sub = (e) => {
-    // validator.validate({ a1: value.a1 }, (errors, fields) => {
-    //   if (errors && fields.a1) {
-    //     console.log(fields.a1[0].message);
-    //     return errors;
-    //   }
-    // });
-
+    const obj2 = {};
+    setModelControl({ ...obj2 });
     e.preventDefault();
     validator.validate(value, (errors, fields) => {
       if (errors) {
         for (let key of errors) {
-          console.log(key.message);
+          const obj = { [key.field]: key.message };
+          Object.assign(obj2, obj);
         }
-        // modelControl.value[prop] = fields[prop][0].message
+        setModelControl({ ...obj2 });
         return errors;
       } else {
         console.log(value);
@@ -88,13 +70,17 @@ export default function MuiForm(props) {
           return (
             <FormControl variant="standard">
               <TextField
-                error
                 label={item.label}
                 type="text"
                 variant={item.variant}
                 prop="a1"
-                helperText={modelControl["a1"] | item.helperText}
+                helperText={
+                  modelControl[item.field]
+                    ? modelControl[item.field]
+                    : item.helperText
+                }
                 required={getRequired(props.rules[item.field])}
+                error={modelControl[item.field] ? true : false}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -107,9 +93,14 @@ export default function MuiForm(props) {
               <TextField
                 label={item.label}
                 type="password"
-                helperText={item.helperText}
+                helperText={
+                  modelControl[item.field]
+                    ? modelControl[item.field]
+                    : item.helperText
+                }
                 variant={item.variant}
                 required={getRequired(props.rules[item.field])}
+                error={modelControl[item.field] ? true : false}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -122,9 +113,14 @@ export default function MuiForm(props) {
               <TextField
                 label={item.label}
                 type="text"
-                helperText={item.helperText}
+                helperText={
+                  modelControl[item.field]
+                    ? modelControl[item.field]
+                    : item.helperText
+                }
                 multiline
                 required={getRequired(props.rules[item.field])}
+                error={modelControl[item.field] ? true : false}
                 rows={item.rows ? item.rows : 1}
                 variant={item.variant}
                 onChange={(e) => {
@@ -140,7 +136,8 @@ export default function MuiForm(props) {
                 label={item.label}
                 type="number"
                 helperText={item.helperText}
-                required={item.required ? true : false}
+                required={getRequired(props.rules[item.field])}
+                error={modelControl[item.field] ? true : false}
                 variant={item.variant}
                 onChange={(e) => {
                   handleTextField(e, item.field);
@@ -169,27 +166,6 @@ export default function MuiForm(props) {
         }
       })}
 
-      {/* <FormControl>
-        <FormLabel>Gender</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
-          name="radio-buttons-group"
-        >
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
-          <FormControlLabel value="other" control={<Radio />} label="Other" />
-        </RadioGroup>
-      </FormControl>
-      <FormControl fullWidth>
-        <InputLabel>Age</InputLabel>
-        <Select value={age} label="Age" onChange={handleChange}>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl> */}
       <Button onClick={sub} variant="contained">
         确定
       </Button>

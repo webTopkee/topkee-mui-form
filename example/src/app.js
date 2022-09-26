@@ -14,14 +14,14 @@ const schemas = [
     component: "InputPassword",
     label: "密码",
     variant: "standard",
-    helperText: "带*_+字母+数字组合",
+    // helperText: "带*_+字母+数字组合",
   },
   {
     field: "a3",
     component: "InputTextArea",
     label: "多行文本",
     rows: 4,
-    variant: "outlined",
+    variant: "standard",
   },
   {
     field: "a4",
@@ -46,15 +46,20 @@ const schemas = [
   //     {
   //       label: "选项三",
   //       value: "3",
-  //     },
+  //     },`
   //   ],
   // },
 ];
 
 const rules = {
   a1: { required: true, message: "请输入账号" },
-  pwd: { required: false, message: "请输入密码" },
+  pwd: { required: true, message: "请输入密码" },
+  a3: { required: true, message: "请输入多行文本" },
 };
 
-const App = () => <MuiForm schemas={schemas} rules={rules} />;
+const App = () => (
+  <>
+    <MuiForm schemas={schemas} rules={rules} />
+  </>
+);
 render(<App />, document.getElementById("root"));
