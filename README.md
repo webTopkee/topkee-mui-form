@@ -8,9 +8,18 @@ npm i topkee-mui-form
 ## 引用
 ```js
 import MuiForm from "topkee-mui-form";
+<MuiForm schemas={schemas} rules={rules} />
+```
 
-// 配置参数
-const schemas = [
+## Props
+|属性|默认值|可选值|说明|
+|----|-----|------|-----|
+|schemas|-|-|创建表单类型|
+|rules|-|-|校验规则基于async-validator|
+## schemas
+表单配置参数
+```js
+const Schemas = [
   {
     field: "name",
     component: "Input",
@@ -44,8 +53,11 @@ const schemas = [
     variant: "outlined",
   },
 ]
+```
 
-// 校验参数
+## Rules
+表单校验配置
+```js
 const rules = {
   name: [
     { required: true, message: "请输入账号" },
@@ -59,19 +71,11 @@ const rules = {
   text: { required: false, message: "请输入多行文本" },
   number: { required: true, message: "请输入数字" },
 };
-
-<MuiForm schemas={schemas} />
 ```
 
-## 效果图
-![img](https://webertop.oss-cn-hongkong.topkee.top/u_411116921098997760/202209231555652.png)
-## Props
-|属性|默认值|可选值|说明|
-|----|-----|------|-----|
-|schemas|-|-|创建表单类型|
-|rules|-|-|校验规则基于async-validator|
 
-## schemas 内组件的可选类型
+
+## Component 内组件的可选类型
 ```js
 'Input'
 'InputPassword'
