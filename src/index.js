@@ -18,8 +18,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Schema from "async-validator";
 
 export default function MuiForm(props) {
+  const validator = new Schema(props.rules);
   const [value, setValue] = useState({});
   const [modelControl, setModelControl] = useState({});
+  const newModelControl = {};
 
   const handleTextField = (even, field) => {
     const obj = Object.assign(value, { [field]: even.target.value });
@@ -37,24 +39,41 @@ export default function MuiForm(props) {
   };
 
   const sub = (e) => {
-    const obj2 = {};
-    setModelControl({ ...obj2 });
+    setModelControl({ ...newModelControl });
     e.preventDefault();
     validator.validate(value, (errors, fields) => {
       if (errors) {
         for (let key of errors) {
           const obj = { [key.field]: key.message };
-          Object.assign(obj2, obj);
+          Object.assign(newModelControl, obj);
         }
-        setModelControl({ ...obj2 });
+        setModelControl({ ...newModelControl });
         return errors;
       } else {
-        console.log(value);
+        alert(JSON.stringify(value));
       }
     });
   };
 
-  const validator = new Schema(props.rules);
+  const blur = (item) => {
+    let field = item.field;
+    if (value[field]) {
+      const newObj = {};
+      delete modelControl[field];
+      Object.assign(newObj, modelControl);
+      setModelControl(newObj);
+    } else {
+      validator.validate({ field: value[field] }, (errors, fields) => {
+        if (errors && fields[field]) {
+          Object.assign(newModelControl, modelControl, {
+            [field]: fields[field][0].message,
+          });
+          setModelControl({ ...newModelControl });
+          return errors;
+        }
+      });
+    }
+  };
 
   return (
     <Box
@@ -84,6 +103,9 @@ export default function MuiForm(props) {
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
+                onBlur={() => {
+                  blur(item);
+                }}
               />
             </FormControl>
           );
@@ -103,6 +125,9 @@ export default function MuiForm(props) {
                 error={modelControl[item.field] ? true : false}
                 onChange={(e) => {
                   handleTextField(e, item.field);
+                }}
+                onBlur={() => {
+                  blur(item);
                 }}
               />
             </FormControl>
@@ -126,6 +151,9 @@ export default function MuiForm(props) {
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
+                onBlur={() => {
+                  blur(item);
+                }}
               />
             </FormControl>
           );
@@ -135,12 +163,19 @@ export default function MuiForm(props) {
               <TextField
                 label={item.label}
                 type="number"
-                helperText={item.helperText}
+                helperText={
+                  modelControl[item.field]
+                    ? modelControl[item.field]
+                    : item.helperText
+                }
                 required={getRequired(props.rules[item.field])}
                 error={modelControl[item.field] ? true : false}
                 variant={item.variant}
                 onChange={(e) => {
                   handleTextField(e, item.field);
+                }}
+                onBlur={() => {
+                  blur(item);
                 }}
               />
             </FormControl>
@@ -165,7 +200,6 @@ export default function MuiForm(props) {
           );
         }
       })}
-
       <Button onClick={sub} variant="contained">
         确定
       </Button>

@@ -4,9 +4,15 @@ import MuiForm from "../../src"; // 引入组件
 
 const schemas = [
   {
-    field: "a1",
+    field: "name",
     component: "Input",
-    label: "输入框",
+    label: "用户名",
+    variant: "standard",
+  },
+  {
+    field: "email",
+    component: "Input",
+    label: "邮箱",
     variant: "standard",
   },
   {
@@ -14,17 +20,17 @@ const schemas = [
     component: "InputPassword",
     label: "密码",
     variant: "standard",
-    // helperText: "带*_+字母+数字组合",
+    helperText: "带*_+字母+数字组合",
   },
   {
-    field: "a3",
+    field: "text",
     component: "InputTextArea",
     label: "多行文本",
     rows: 4,
     variant: "standard",
   },
   {
-    field: "a4",
+    field: "number",
     component: "InputNumber",
     label: "数字",
     variant: "outlined",
@@ -52,9 +58,21 @@ const schemas = [
 ];
 
 const rules = {
-  a1: { required: true, message: "请输入账号" },
+  name: [
+    { required: true, message: "请输入账号" },
+    { required: false, min: 2, max: 5, message: "请输入2-5长度用户名" },
+  ],
+  email: {
+    required: false,
+    message: "请输入邮箱地址",
+  },
   pwd: { required: true, message: "请输入密码" },
-  a3: { required: true, message: "请输入多行文本" },
+  text: { required: false, message: "请输入多行文本" },
+  number: { required: true, message: "请输入数字" },
+};
+
+const sub = () => {
+  console.log("提交");
 };
 
 const App = () => (

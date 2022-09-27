@@ -9,36 +9,56 @@ npm i topkee-mui-form
 ```js
 import MuiForm from "topkee-mui-form";
 
+// 配置参数
 const schemas = [
   {
-    field: "a1",
+    field: "name",
     component: "Input",
-    label: "输入框",
+    label: "用户名",
     variant: "standard",
-    required: true,
   },
   {
-    field: "a2",
+    field: "email",
+    component: "Input",
+    label: "邮箱",
+    variant: "standard",
+  },
+  {
+    field: "pwd",
     component: "InputPassword",
     label: "密码",
     variant: "standard",
-    required: true,
     helperText: "带*_+字母+数字组合",
   },
   {
-    field: "a3",
+    field: "text",
     component: "InputTextArea",
     label: "多行文本",
     rows: 4,
-    variant: "outlined",
+    variant: "standard",
   },
   {
-    field: "a4",
+    field: "number",
     component: "InputNumber",
     label: "数字",
     variant: "outlined",
   },
-  ]
+]
+
+// 校验参数
+const rules = {
+  name: [
+    { required: true, message: "请输入账号" },
+    { required: false, min: 2, max: 5, message: "请输入2-5长度用户名" },
+  ],
+  email: {
+    required: false,
+    message: "请输入邮箱地址",
+  },
+  pwd: { required: true, message: "请输入密码" },
+  text: { required: false, message: "请输入多行文本" },
+  number: { required: true, message: "请输入数字" },
+};
 
 <MuiForm schemas={schemas} />
 ```
@@ -49,6 +69,7 @@ const schemas = [
 |属性|默认值|可选值|说明|
 |----|-----|------|-----|
 |schemas|-|-|创建表单类型|
+|rules|-|-|校验规则基于async-validator|
 
 ## schemas 内组件的可选类型
 ```js
