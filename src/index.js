@@ -18,9 +18,15 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Schema from "async-validator";
 
 export default function MuiForm(props) {
+  //  checkbox: ["gilad","jason","antoine"];
   const validator = new Schema(props.rules);
   const [value, setValue] = useState({});
   const [modelControl, setModelControl] = useState({});
+  const [state, setState] = React.useState({
+    gilad: true,
+    jason: false,
+    antoine: false,
+  });
   const newModelControl = {};
 
   const handleTextField = (even, field) => {
@@ -73,6 +79,17 @@ export default function MuiForm(props) {
         }
       });
     }
+  };
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+    console.log({ [event.target.name]: event.target.checked });
+  };
+
+  const handleRadioChange = (event, item) => {
+    const obj = { [item.field]: event.target.value };
+    Object.assign(value, obj);
+    setValue({ ...value });
   };
 
   return (
@@ -180,16 +197,50 @@ export default function MuiForm(props) {
               />
             </FormControl>
           );
+        } else if (item.component === "Radio") {
+          return (
+            <FormControl component="fieldset" error={modelControl[item.field]}>
+              <FormLabel component="legend">
+                {item.label}
+                {getRequired(props.rules[item.field]) ? "*" : ""}
+              </FormLabel>
+              <RadioGroup
+                value={value[item.field]}
+                onChange={(e) => {
+                  handleRadioChange(e, item);
+                }}
+              >
+                {item.options.map((options) => {
+                  return (
+                    <FormControlLabel
+                      value={options.value}
+                      control={<Radio size="small" />}
+                      label={options.label}
+                    />
+                  );
+                })}
+              </RadioGroup>
+              <FormHelperText>
+                {modelControl[item.field]
+                  ? modelControl[item.field]
+                  : item.helperText}
+              </FormHelperText>
+            </FormControl>
+          );
         } else if (item.component === "Checkbox") {
           return (
-            <FormControl component="fieldset" variant="standard">
+            <FormControl component="fieldset">
               <FormLabel component="legend">{item.label}</FormLabel>
-              <FormGroup row>
+              <FormGroup>
                 {item.options.map((options) => {
                   return (
                     <FormControlLabel
                       control={
-                        <Checkbox checked={gilad} name={options.value} />
+                        <Checkbox
+                          checked={state[options.value]}
+                          onChange={handleChange}
+                          name={options.value}
+                        />
                       }
                       label={options.label}
                     />

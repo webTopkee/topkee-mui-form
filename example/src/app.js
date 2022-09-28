@@ -9,12 +9,12 @@ const schemas = [
     label: "用户名",
     variant: "standard",
   },
-  {
-    field: "email",
-    component: "Input",
-    label: "邮箱",
-    variant: "standard",
-  },
+  // {
+  //   field: "email",
+  //   component: "Input",
+  //   label: "邮箱",
+  //   variant: "standard",
+  // },
   {
     field: "pwd",
     component: "InputPassword",
@@ -22,53 +22,65 @@ const schemas = [
     variant: "standard",
     helperText: "带*_+字母+数字组合",
   },
-  {
-    field: "text",
-    component: "InputTextArea",
-    label: "多行文本",
-    rows: 4,
-    variant: "standard",
-  },
-  {
-    field: "number",
-    component: "InputNumber",
-    label: "数字",
-    variant: "outlined",
-  },
-
   // {
-  //   field: "field2",
-  //   component: "Checkbox",
-  //   label: "字段二",
-  //   options: [
-  //     {
-  //       label: "选项一",
-  //       value: "1",
-  //     },
-  //     {
-  //       label: "选项二",
-  //       value: "2",
-  //     },
-  //     {
-  //       label: "选项三",
-  //       value: "3",
-  //     },`
-  //   ],
+  //   field: "text",
+  //   component: "InputTextArea",
+  //   label: "多行文本",
+  //   rows: 4,
+  //   variant: "standard",
   // },
+  // {
+  //   field: "number",
+  //   component: "InputNumber",
+  //   label: "数字",
+  //   variant: "outlined",
+  // },
+  {
+    field: "radio",
+    component: "Radio",
+    label: "性别",
+    options: [
+      {
+        label: "男",
+        value: "male",
+      },
+      {
+        label: "女",
+        value: "female",
+      },
+    ],
+  },
+  {
+    field: "checkbox",
+    component: "Checkbox",
+    label: "多选框",
+    options: [
+      {
+        label: "选项一",
+        value: "gilad",
+      },
+      {
+        label: "选项二",
+        value: "jason",
+      },
+      {
+        label: "选项三",
+        value: "antoine",
+      },
+    ],
+  },
 ];
 
 const rules = {
-  name: [
-    { required: true, message: "请输入账号" },
-    { required: false, min: 2, max: 5, message: "请输入2-5长度用户名" },
-  ],
-  email: {
-    required: false,
-    message: "请输入邮箱地址",
-  },
+  name: [{ required: true, message: "请输入账号" }],
+  // email: {
+  //   required: false,
+  //   message: "请输入邮箱地址",
+  // },
   pwd: { required: true, message: "请输入密码" },
-  text: { required: false, message: "请输入多行文本" },
-  number: { required: true, message: "请输入数字" },
+  radio: { required: true, message: "请选择一项" },
+  // text: { required: false, message: "请输入多行文本" },
+  // number: { required: true, message: "请输入数字" },
 };
 
 const sub = () => {

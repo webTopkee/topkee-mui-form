@@ -77,10 +77,11 @@ const rules = {
 
 ## Component 内组件的可选类型
 ```js
-'Input'
-'InputPassword'
-'InputTextArea'
-'InputNumber'
+"Input"
+"InputPassword"
+"InputTextArea"
+"InputNumber"
+"Radio"
 ```
 
 ## License
