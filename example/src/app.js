@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import MuiForm from "../../src"; // 引入组件
+import Demo from "../../src/demo";
 
 const schemas = [
   {
@@ -53,38 +54,61 @@ const schemas = [
   {
     field: "checkbox",
     component: "Checkbox",
-    label: "多选框",
+    label: "兴趣",
     options: [
       {
-        label: "选项一",
-        value: "gilad",
+        label: "跑步",
+        value: "paobu",
       },
       {
-        label: "选项二",
-        value: "jason",
+        label: "游泳",
+        value: "youyoung",
       },
       {
-        label: "选项三",
-        value: "antoine",
+        label: "打球",
+        value: "daqiu",
+      },
+    ],
+  },
+  {
+    field: "checkbox2",
+    component: "Checkbox",
+    label: "兴趣2",
+    options: [
+      {
+        label: "AA",
+        value: "aa",
+      },
+      {
+        label: "BB",
+        value: "bb",
+      },
+      {
+        label: "CC",
+        value: "cc",
       },
     ],
   },
 ];
 
 const rules = {
-  name: [{ required: true, message: "请输入账号" }],
-  // email: {
-  //   required: false,
-  //   message: "请输入邮箱地址",
-  // },
-  pwd: { required: true, message: "请输入密码" },
-  radio: { required: true, message: "请选择一项" },
-  // text: { required: false, message: "请输入多行文本" },
-  // number: { required: true, message: "请输入数字" },
+  name: [{ required: false, message: "请输入账号" }],
+  email: {
+    required: false,
+    message: "请输入邮箱地址",
+  },
+  pwd: { required: false, message: "请输入密码" },
+  radio: { required: false, message: "请选择一项" },
+  text: { required: false, message: "请输入多行文本" },
+  number: { required: false, message: "请输入数字" },
 };
 
-const sub = () => {
-  console.log("提交");
+const formData = {
+  name: "5434",
+  pwd: "234",
+  radio: "female",
+  checkbox: ["paobu"],
+  checkbox2: ["aa", "bb"],
 };
 
 const App = () => (

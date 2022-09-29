@@ -17,21 +17,35 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Schema from "async-validator";
 
-export default function MuiForm(props) {
-  //  checkbox: ["gilad","jason","antoine"];
-  const validator = new Schema(props.rules);
-  const [value, setValue] = useState({});
-  const [modelControl, setModelControl] = useState({});
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
+function MuiForm({ schemas, rules, formData = {} }) {
+  const checkboxList = {};
+  const checkboxChecked = [];
+
+  schemas.map((item) => {
+    if (item.component === "Checkbox") {
+      if (!!formData[item.field]) {
+        checkboxChecked.push(...formData[item.field]);
+      }
+
+      item.options.map((options) => {
+        Object.assign(checkboxList, {
+          [options.value]: !!formData[item.field]
+            ? checkboxChecked.includes(options.value)
+            : false,
+        });
+      });
+    }
   });
+
+  const validator = new Schema(rules);
+  const [value, setValue] = useState(formData);
+  const [modelControl, setModelControl] = useState({});
+  const [state, setState] = useState(checkboxList);
   const newModelControl = {};
 
   const handleTextField = (even, field) => {
-    const obj = Object.assign(value, { [field]: even.target.value });
-    setValue(obj);
+    Object.assign(value, { [field]: even.target.value });
+    setValue(value);
   };
 
   const getRequired = (condition) => {
@@ -81,15 +95,24 @@ export default function MuiForm(props) {
     }
   };
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-    console.log({ [event.target.name]: event.target.checked });
-  };
-
   const handleRadioChange = (event, item) => {
     const obj = { [item.field]: event.target.value };
     Object.assign(value, obj);
     setValue({ ...value });
+  };
+
+  const handleChange = (event, field) => {
+    const { name, checked } = event.target;
+    setState({ ...state, [name]: checked });
+    if (checked) {
+      if (value[field]) {
+        value[field] = [...value[field], ...[name]];
+      } else {
+        value[field] = [...[name]];
+      }
+    } else {
+      value[field] = value[field].filter((e) => e !== name);
+    }
   };
 
   return (
@@ -101,7 +124,7 @@ export default function MuiForm(props) {
         gap: 2,
       }}
     >
-      {props.schemas.map((item) => {
+      {schemas.map((item) => {
         if (item.component === "Input") {
           return (
             <FormControl variant="standard">
@@ -115,8 +138,9 @@ export default function MuiForm(props) {
                     ? modelControl[item.field]
                     : item.helperText
                 }
-                required={getRequired(props.rules[item.field])}
+                required={getRequired(rules[item.field])}
                 error={modelControl[item.field] ? true : false}
+                defaultValue={value[item.field]}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -138,8 +162,9 @@ export default function MuiForm(props) {
                     : item.helperText
                 }
                 variant={item.variant}
-                required={getRequired(props.rules[item.field])}
+                required={getRequired(rules[item.field])}
                 error={modelControl[item.field] ? true : false}
+                defaultValue={value[item.field]}
                 onChange={(e) => {
                   handleTextField(e, item.field);
                 }}
@@ -161,8 +186,9 @@ export default function MuiForm(props) {
                     : item.helperText
                 }
                 multiline
-                required={getRequired(props.rules[item.field])}
+                required={getRequired(rules[item.field])}
                 error={modelControl[item.field] ? true : false}
+                defaultValue={value[item.field]}
                 rows={item.rows ? item.rows : 1}
                 variant={item.variant}
                 onChange={(e) => {
@@ -185,8 +211,9 @@ export default function MuiForm(props) {
                     ? modelControl[item.field]
                     : item.helperText
                 }
-                required={getRequired(props.rules[item.field])}
+                required={getRequired(rules[item.field])}
                 error={modelControl[item.field] ? true : false}
+                defaultValue={value[item.field]}
                 variant={item.variant}
                 onChange={(e) => {
                   handleTextField(e, item.field);
@@ -202,7 +229,7 @@ export default function MuiForm(props) {
             <FormControl component="fieldset" error={modelControl[item.field]}>
               <FormLabel component="legend">
                 {item.label}
-                {getRequired(props.rules[item.field]) ? "*" : ""}
+                {getRequired(rules[item.field]) ? "*" : ""}
               </FormLabel>
               <RadioGroup
                 value={value[item.field]}
@@ -238,7 +265,9 @@ export default function MuiForm(props) {
                       control={
                         <Checkbox
                           checked={state[options.value]}
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            handleChange(e, item.field);
+                          }}
                           name={options.value}
                         />
                       }
@@ -257,3 +286,5 @@ export default function MuiForm(props) {
     </Box>
   );
 }
+
+export default MuiForm;
