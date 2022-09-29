@@ -127,7 +127,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
       {schemas.map((item) => {
         if (item.component === "Input") {
           return (
-            <FormControl variant="standard">
+            <FormControl variant="standard" key={item.field}>
               <TextField
                 label={item.label}
                 type="text"
@@ -152,7 +152,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
           );
         } else if (item.component === "InputPassword") {
           return (
-            <FormControl variant="standard">
+            <FormControl variant="standard" key={item.field}>
               <TextField
                 label={item.label}
                 type="password"
@@ -176,7 +176,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
           );
         } else if (item.component === "InputTextArea") {
           return (
-            <FormControl variant="standard">
+            <FormControl variant="standard" key={item.field}>
               <TextField
                 label={item.label}
                 type="text"
@@ -202,7 +202,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
           );
         } else if (item.component === "InputNumber") {
           return (
-            <FormControl variant="standard">
+            <FormControl variant="standard" key={item.field}>
               <TextField
                 label={item.label}
                 type="number"
@@ -226,7 +226,11 @@ function MuiForm({ schemas, rules, formData = {} }) {
           );
         } else if (item.component === "Radio") {
           return (
-            <FormControl component="fieldset" error={modelControl[item.field]}>
+            <FormControl
+              component="fieldset"
+              error={modelControl[item.field]}
+              key={item.field}
+            >
               <FormLabel component="legend">
                 {item.label}
                 {getRequired(rules[item.field]) ? "*" : ""}
@@ -240,6 +244,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
                 {item.options.map((options) => {
                   return (
                     <FormControlLabel
+                      key={options.value}
                       value={options.value}
                       control={<Radio size="small" />}
                       label={options.label}
@@ -256,12 +261,13 @@ function MuiForm({ schemas, rules, formData = {} }) {
           );
         } else if (item.component === "Checkbox") {
           return (
-            <FormControl component="fieldset">
+            <FormControl component="fieldset" key={item.field}>
               <FormLabel component="legend">{item.label}</FormLabel>
               <FormGroup>
                 {item.options.map((options) => {
                   return (
                     <FormControlLabel
+                      key={options.value}
                       control={
                         <Checkbox
                           checked={state[options.value]}

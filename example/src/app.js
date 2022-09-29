@@ -112,7 +112,7 @@ const formData = {
 
 const App = () => (
   <>
-    <MuiForm schemas={schemas} rules={rules} />
+    <MuiForm schemas={schemas} rules={rules} formData={formData} />
   </>
 );
 render(<App />, document.getElementById("root"));
