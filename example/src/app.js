@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import MuiForm from "../../src"; // 引入组件
-import Demo from "../../src/demo";
+import MuiForm from "../../src";
 
 const schemas = [
   {
