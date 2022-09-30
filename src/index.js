@@ -26,7 +26,6 @@ function MuiForm({ schemas, rules, formData = {} }) {
       if (!!formData[item.field]) {
         checkboxChecked.push(...formData[item.field]);
       }
-
       item.options.map((options) => {
         Object.assign(checkboxList, {
           [options.value]: !!formData[item.field]
@@ -61,7 +60,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
   const sub = (e) => {
     setModelControl({ ...newModelControl });
     e.preventDefault();
-    validator.validate(value, (errors, fields) => {
+    validator.validate(value, (errors) => {
       if (errors) {
         for (let key of errors) {
           const obj = { [key.field]: key.message };
@@ -83,15 +82,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
       Object.assign(newObj, modelControl);
       setModelControl(newObj);
     } else {
-      validator.validate({ field: value[field] }, (errors, fields) => {
-        if (errors && fields[field]) {
-          Object.assign(newModelControl, modelControl, {
-            [field]: fields[field][0].message,
-          });
-          setModelControl({ ...newModelControl });
-          return errors;
-        }
-      });
+      validators(field);
     }
   };
 
@@ -99,9 +90,22 @@ function MuiForm({ schemas, rules, formData = {} }) {
     const obj = { [item.field]: event.target.value };
     Object.assign(value, obj);
     setValue({ ...value });
+    delete modelControl[item.field];
   };
 
-  const handleChange = (event, field) => {
+  const validators = (field) => {
+    validator.validate({ field: value[field] }, (errors, fields) => {
+      if (errors && fields[field]) {
+        Object.assign(newModelControl, modelControl, {
+          [field]: fields[field][0].message,
+        });
+        setModelControl({ ...newModelControl });
+        return errors;
+      }
+    });
+  };
+
+  const handleCheckbox = (event, field) => {
     const { name, checked } = event.target;
     setState({ ...state, [name]: checked });
     if (checked) {
@@ -112,6 +116,11 @@ function MuiForm({ schemas, rules, formData = {} }) {
       }
     } else {
       value[field] = value[field].filter((e) => e !== name);
+    }
+    if (value[field].length !== 0) {
+      delete modelControl[field];
+    } else {
+      validators(field);
     }
   };
 
@@ -261,8 +270,15 @@ function MuiForm({ schemas, rules, formData = {} }) {
           );
         } else if (item.component === "Checkbox") {
           return (
-            <FormControl component="fieldset" key={item.field}>
-              <FormLabel component="legend">{item.label}</FormLabel>
+            <FormControl
+              component="fieldset"
+              key={item.field}
+              error={modelControl[item.field]}
+            >
+              <FormLabel component="legend">
+                {item.label}
+                {getRequired(rules[item.field]) ? "*" : ""}
+              </FormLabel>
               <FormGroup>
                 {item.options.map((options) => {
                   return (
@@ -272,7 +288,7 @@ function MuiForm({ schemas, rules, formData = {} }) {
                         <Checkbox
                           checked={state[options.value]}
                           onChange={(e) => {
-                            handleChange(e, item.field);
+                            handleCheckbox(e, item.field);
                           }}
                           name={options.value}
                         />
@@ -282,6 +298,11 @@ function MuiForm({ schemas, rules, formData = {} }) {
                   );
                 })}
               </FormGroup>
+              <FormHelperText>
+                {modelControl[item.field]
+                  ? modelControl[item.field]
+                  : item.helperText}
+              </FormHelperText>
             </FormControl>
           );
         }

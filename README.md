@@ -12,10 +12,11 @@ import MuiForm from "topkee-mui-form";
 ```
 
 ## Props
-|属性|默认值|可选值|说明|
-|----|-----|------|-----|
-|schemas|-|-|创建表单类型|
-|rules|-|-|校验规则基于async-validator|
+|属性|类型|默认值|可选值|说明|
+|----|----|-----|------|-----|
+|schemas|object|-|-|创建表单类型|
+|rules|object|-|-|校验规则基于async-validator|
+|formData|object|-|-|数据|
 ## schemas
 表单配置参数
 ```js
@@ -24,12 +25,6 @@ const Schemas = [
     field: "name",
     component: "Input",
     label: "用户名",
-    variant: "standard",
-  },
-  {
-    field: "email",
-    component: "Input",
-    label: "邮箱",
     variant: "standard",
   },
   {
@@ -52,6 +47,40 @@ const Schemas = [
     label: "数字",
     variant: "outlined",
   },
+  {
+    field: "radio",
+    component: "Radio",
+    label: "性别",
+    options: [
+      {
+        label: "男",
+        value: "male",
+      },
+      {
+        label: "女",
+        value: "female",
+      },
+    ],
+  },
+  {
+    field: "checkbox",
+    component: "Checkbox",
+    label: "兴趣",
+    options: [
+      {
+        label: "跑步",
+        value: "paobu",
+      },
+      {
+        label: "游泳",
+        value: "youyoung",
+      },
+      {
+        label: "打球",
+        value: "daqiu",
+      },
+    ],
+  },
 ]
 ```
 
@@ -59,10 +88,7 @@ const Schemas = [
 表单校验配置
 ```js
 const rules = {
-  name: [
-    { required: true, message: "请输入账号" },
-    { required: false, min: 2, max: 5, message: "请输入2-5长度用户名" },
-  ],
+  name: { required: true, message: "请输入账号" },
   email: {
     required: false,
     message: "请输入邮箱地址",
@@ -70,6 +96,8 @@ const rules = {
   pwd: { required: true, message: "请输入密码" },
   text: { required: false, message: "请输入多行文本" },
   number: { required: true, message: "请输入数字" },
+  radio: { required: true, message: "请选择性别" },
+  checkbox: { required: true, message: "请选择兴趣" },
 };
 ```
 
@@ -82,6 +110,7 @@ const rules = {
 "InputTextArea"
 "InputNumber"
 "Radio"
+"checkbox"
 ```
 
 ## License
